@@ -2,6 +2,21 @@
 
 TOML in c99; v1.0 compliant, with Meson subproject support.
 
+## Building and installing
+
+Follow standard procedure with Meson. Example:
+
+```bash
+git clone https://git.lotte.link/naphtha/libhztoml libhztoml
+cd libhztoml
+
+meson builddir
+cd builddir
+meson configure -Dc_args="-O2 -march=core2 -mtune=generic -g"
+meson compile
+meson install
+```
+
 ## Usage
 
 Please see the `toml.h` file for details. What follows is a simple example that
@@ -154,18 +169,3 @@ if (host.ok) {
 ```
 
 ** IMPORTANT: if the accessed value is a string or a timestamp, you must call `free(datum.u.s)` or `free(datum.u.ts)` respectively after usage. **
-
-## Building and installing
-
-Follow standard procedure with Meson. Example:
-
-```bash
-git clone https://git.lotte.link/naphtha/libhztoml libhztoml
-cd libhztoml
-
-meson builddir
-cd builddir
-meson configure -Dc_args="-O2 -march=core2 -mtune=generic -g"
-meson compile
-meson install
-```
