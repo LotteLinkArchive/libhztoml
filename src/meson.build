@@ -1,2 +1,4 @@
-hztoml = library('hztoml', ['toml.c'], version : '1.0.0', soversion : '1', install : true)
-install_headers(['toml.h'], subdir : 'hztoml')
+hztoml_incdir = include_directories('include')
+hztoml = library('hztoml', ['toml.c'], version : '1.0.0', soversion : '1', include_directories : hztoml_incdir, install : true)
+install_headers(['include/toml.h'], subdir : 'hztoml')
+hztoml_dep = declare_dependency(include_directories : hztoml_incdir, link_with : hztoml)

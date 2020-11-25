@@ -2,7 +2,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
-#include "../src/toml.h"
+#include "../src/include/toml.h"
 
 toml_table_t* load()
 {

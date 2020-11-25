@@ -31,7 +31,7 @@
 #include <errno.h>
 #include <assert.h>
 #include <inttypes.h>
-#include "../src/toml.h"
+#include "../src/include/toml.h"
 
 
 static void print_escape_string(const char* s)
