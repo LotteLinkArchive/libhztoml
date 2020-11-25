@@ -36,3 +36,7 @@ toml_sample
 # Debug files
 *.dSYM/
 *.su
+
+# Meson
+bin/
+builddir/
