@@ -1,8 +1,6 @@
-# tomlc99
+# libhztoml
 
-TOML in c99; v1.0 compliant.
-
-If you are looking for a C++ library, you might try this wrapper: [https://github.com/cktan/tomlcpp](https://github.com/cktan/tomlcpp).
+TOML in c99; v1.0 compliant, with Meson subproject support.
 
 ## Usage
 
@@ -159,32 +157,15 @@ if (host.ok) {
 
 ## Building and installing
 
-A normal *make* suffices. You can also simply include the
-`toml.c` and `toml.h` files in your project.
+Follow standard procedure with Meson. Example:
 
-Invoking `make install` will install the header file in
-/usr/local/include and library files in /usr/local/lib.
+```bash
+git clone https://git.lotte.link/naphtha/libhztoml libhztoml
+cd libhztoml
 
-Alternatively, specify `make install prefix=/a/file/path` to install into
-/a/file/path/include and /a/file/path/lib/.
-
-## Testing
-
-To test against the standard test set provided by BurntSushi/toml-test:
-
-```sh
-% make
-% cd test1
-% bash build.sh   # do this once
-% bash run.sh     # this will run the test suite
-```
-
-
-To test against the standard test set provided by iarna/toml:
-
-```sh
-% make
-% cd test2
-% bash build.sh   # do this once
-% bash run.sh     # this will run the test suite
+meson builddir
+cd builddir
+meson configure -Dc_args="-O2 -march=core2 -mtune=generic -g"
+meson compile
+meson install
 ```
