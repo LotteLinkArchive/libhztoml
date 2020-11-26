@@ -134,55 +134,6 @@ struct toml_table_t {
 	toml_table_t** tab;
 };
 
-enum tokentype_t {
-	INVALID,
-	DOT,
-	COMMA,
-	EQUAL,
-	LBRACE,
-	RBRACE,
-	NEWLINE,
-	LBRACKET,
-	RBRACKET,
-	STRING,
-};
-typedef enum tokentype_t tokentype_t;
-
-typedef struct token_t token_t;
-struct token_t {
-	tokentype_t tok;
-	int		lineno;
-	char*	ptr;		/* points into context->start */
-	int		len;
-	int		eof;
-};
-
-
-typedef struct context_t context_t;
-struct context_t {
-	char* start;
-	char* stop;
-	char* errbuf;
-	int	  errbufsz;
-
-	token_t tok;
-	toml_table_t* root;
-	toml_table_t* curtab;
-
-	struct {
-		int	top;
-		char*	key[10];
-		token_t tok[10];
-	} tpath;
-
-};
-
-typedef struct tabpath_t tabpath_t;
-struct tabpath_t {
-	int		cnt;
-	token_t key[10];
-};
-
 /* on arrays: */
 /* ... retrieve size of array. */
 TOML_EXTERN int toml_array_nelem(const toml_array_t* arr);
