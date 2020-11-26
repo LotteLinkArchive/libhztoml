@@ -25,10 +25,9 @@
 #ifndef TOML_H
 #define TOML_H
 
-
 #include <stdio.h>
 #include <stdint.h>
-
+#include <stdbool.h>
 
 #ifdef __cplusplus
 #define TOML_EXTERN extern "C"
@@ -91,6 +90,97 @@ struct toml_datum_t {
 		int64_t i; /* int value */
 		double  d; /* double value */
 	} u;
+};
+
+/*
+ *	TOML has 3 data structures: value, array, table. 
+ *	Each of them can have identification key.
+ */
+typedef struct toml_keyval_t toml_keyval_t;
+struct toml_keyval_t {
+	const char* key;		/* key to this value */
+	const char* val;		/* the raw value */
+};
+
+
+struct toml_array_t {
+	const char* key;		/* key to this array */
+	int kind; /* element kind: 'v'alue, 'a'rray, or 't'able */
+	int type; /* for value kind: 'i'nt, 'd'ouble, 'b'ool, 's'tring, 't'ime, 'D'ate, 'T'imestamp */
+	
+	int nelem;			/* number of elements */
+	union {
+		char** val;
+		toml_array_t** arr;
+		toml_table_t** tab;
+	} u;
+};
+	
+
+struct toml_table_t {
+	const char* key;		/* key to this table */
+	bool implicit;		/* table was created implicitly */
+
+	/* key-values in the table */
+	int			nkval;
+	toml_keyval_t** kval;
+
+	/* arrays in the table */
+	int		   narr;
+	toml_array_t** arr;
+
+	/* tables in the table */
+	int		   ntab;
+	toml_table_t** tab;
+};
+
+enum tokentype_t {
+	INVALID,
+	DOT,
+	COMMA,
+	EQUAL,
+	LBRACE,
+	RBRACE,
+	NEWLINE,
+	LBRACKET,
+	RBRACKET,
+	STRING,
+};
+typedef enum tokentype_t tokentype_t;
+
+typedef struct token_t token_t;
+struct token_t {
+	tokentype_t tok;
+	int		lineno;
+	char*	ptr;		/* points into context->start */
+	int		len;
+	int		eof;
+};
+
+
+typedef struct context_t context_t;
+struct context_t {
+	char* start;
+	char* stop;
+	char* errbuf;
+	int	  errbufsz;
+
+	token_t tok;
+	toml_table_t* root;
+	toml_table_t* curtab;
+
+	struct {
+		int	top;
+		char*	key[10];
+		token_t tok[10];
+	} tpath;
+
+};
+
+typedef struct tabpath_t tabpath_t;
+struct tabpath_t {
+	int		cnt;
+	token_t key[10];
 };
 
 /* on arrays: */
