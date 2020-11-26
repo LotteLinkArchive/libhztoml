@@ -126,6 +126,35 @@ struct toml_table_t {
 	toml_table_t** tab;
 };
 
+enum toml_public_types {
+	TOML_STRING,
+	TOML_BOOL,
+	TOML_INT,
+	TOML_DOUBLE,
+	TOML_TIMESTAMP,
+	TOML_TABLE,
+	TOML_ARRAY
+};
+
+enum toml_reader_types {
+	TOML_DATUM_READER,
+	TOML_ARRAY_READER,
+	TOML_TABLE_READER
+};
+
+typedef unsigned char toml_type_t;
+
+typedef struct {
+	bool ok;
+	toml_type_t reader_type;
+	toml_type_t data_type;
+	union {
+		toml_datum_t d;
+		toml_array_t *a;
+		toml_table_t *t;	
+	} u;
+} toml_accessor_t;
+
 /* on arrays: */
 /* ... retrieve size of array. */
 TOML_EXTERN int toml_array_nelem(const toml_array_t* arr);
@@ -200,4 +229,15 @@ TOML_EXTERN int toml_rtod(toml_raw_t s, double* ret);
 TOML_EXTERN int toml_rtod_ex(toml_raw_t s, double* ret, char* buf, int buflen);
 TOML_EXTERN int toml_rtots(toml_raw_t s, toml_timestamp_t* ret);
 
+/* Get a property from a nested toml table using a single accessor
+ * E.g toml_accessor_gen("window.titles.primarywin", conf, TOML_STRING).u.d.u.s;
+ * Maximum accessor length is 4095 characters by default.
+ * Define MAX_ACCESSOR_SIZE when *compiling* the library to change this.
+ */
+TOML_EXTERN toml_accessor_t toml_accessor_gen(
+	const char *accessor_obj,
+	toml_table_t *table,
+	toml_type_t type);
+
+#undef TOML_EXTERN
 #endif /* TOML_H */
