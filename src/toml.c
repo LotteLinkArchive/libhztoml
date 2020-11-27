@@ -2217,13 +2217,13 @@ toml_accessor_t toml_accessor_gen(
 	RDFPOINT(toml_table_t*, table_rdr); RDFPOINT(toml_array_t*, array_rdr); RDFPOINT(toml_datum_t, datum_rdr);
 
 	switch (type) {
-	case TOML_STRING:    datum_rdr = toml_string_in;    final.reader_type = TOML_DATUM_READER;  break;
-	case TOML_BOOL:      datum_rdr = toml_bool_in;      final.reader_type = TOML_DATUM_READER;  break;
-	case TOML_INT:       datum_rdr = toml_int_in;       final.reader_type = TOML_DATUM_READER;  break;
-	case TOML_DOUBLE:    datum_rdr = toml_double_in;    final.reader_type = TOML_DATUM_READER;  break;
-	case TOML_TIMESTAMP: datum_rdr = toml_timestamp_in; final.reader_type = TOML_DATUM_READER;  break;
-	case TOML_TABLE:     table_rdr = toml_table_in;     final.reader_type = TOML_TABLE_READER;  break;
-	case TOML_ARRAY:     array_rdr = toml_array_in;     final.reader_type = TOML_ARRAY_READER;  break; }
+	case TOML_STRING:    datum_rdr = toml_string_in;    final.reader_type = TOML_DATUM_READER; break;
+	case TOML_BOOL:      datum_rdr = toml_bool_in;      final.reader_type = TOML_DATUM_READER; break;
+	case TOML_INT:       datum_rdr = toml_int_in;       final.reader_type = TOML_DATUM_READER; break;
+	case TOML_DOUBLE:    datum_rdr = toml_double_in;    final.reader_type = TOML_DATUM_READER; break;
+	case TOML_TIMESTAMP: datum_rdr = toml_timestamp_in; final.reader_type = TOML_DATUM_READER; break;
+	case TOML_TABLE:     table_rdr = toml_table_in;     final.reader_type = TOML_TABLE_READER; break;
+	case TOML_ARRAY:     array_rdr = toml_array_in;     final.reader_type = TOML_ARRAY_READER; break; }
 	switch (final.reader_type) {
 	case TOML_DATUM_READER: final.u.d = datum_rdr(table, term); final.ok = final.u.d.ok; break;
 	case TOML_ARRAY_READER: final.u.a = array_rdr(table, term); final.ok = final.u.a;    break;
