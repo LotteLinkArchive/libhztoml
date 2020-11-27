@@ -51,10 +51,10 @@ typedef enum tokentype_t tokentype_t;
 typedef struct token_t token_t;
 struct token_t {
 	tokentype_t tok;
-	int		lineno;
-	char*	ptr;		/* points into context->start */
-	int		len;
-	int		eof;
+	int lineno;
+	char* ptr; /* points into context->start */
+	int len;
+	int eof;
 };
 
 typedef struct context_t context_t;
@@ -62,15 +62,15 @@ struct context_t {
 	char* start;
 	char* stop;
 	char* errbuf;
-	int	  errbufsz;
+	int errbufsz;
 
 	token_t tok;
 	toml_table_t* root;
 	toml_table_t* curtab;
 
 	struct {
-		int	top;
-		char*	key[10];
+		int     top;
+		char*   key[10];
 		token_t tok[10];
 	} tpath;
 
@@ -78,7 +78,7 @@ struct context_t {
 
 typedef struct tabpath_t tabpath_t;
 struct tabpath_t {
-	int		cnt;
+	int cnt;
 	token_t key[10];
 };
 
@@ -91,8 +91,8 @@ void toml_set_memutil(void* (*xxmalloc)(size_t), void (*xxfree)(void*))
 	if (xxfree) ppfree = xxfree;
 }
 
-#define MALLOC(a)	  ppmalloc(a)
-#define FREE(a)		  ppfree(a)
+#define MALLOC(a) ppmalloc(a)
+#define FREE(a)   ppfree(a)
 
 static void* CALLOC(size_t nmemb, size_t sz)
 {
