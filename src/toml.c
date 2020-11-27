@@ -2174,17 +2174,20 @@ toml_datum_t toml_timestamp_in(const toml_table_t* arr, const char* key)
 	return ret;
 }	
 
-toml_accessor_t toml_accessor_gen(
-	const char *accessor_obj,
-	toml_table_t *table,
-	toml_type_t type)
-{
-	#ifndef MAX_ACCESSOR_SIZE
-	#define MAX_ACCESSOR_SIZE 4095
-	#endif
+#ifndef MAX_ACCESSOR_SIZE
+#define MAX_ACCESSOR_SIZE 4095
+#endif
 
+toml_accessor_t toml_accessor_gen(
+	toml_table_t *table,
+	toml_type_t type,
+	const char *accessor_obj, ...)
+{
 	char accbuf[MAX_ACCESSOR_SIZE + 1], *accessor;
-	strncpy(accbuf, accessor_obj, (MAX_ACCESSOR_SIZE));
+
+	va_list args;
+	va_start(args, accessor_obj);
+	if ((vsnprintf(accbuf, MAX_ACCESSOR_SIZE, accessor_obj, args)) < 0) goto tzcpunsafe;
 	
 	accessor = (char *)accbuf;
 	toml_accessor_t final = {.ok = 0, .data_type = type};
@@ -2220,6 +2223,7 @@ toml_accessor_t toml_accessor_gen(
 	case TOML_TABLE_READER: final.u.t = table_rdr(table, term); final.ok = final.u.t;    break; }
 
 tzcpcret:
+	va_end(args);
 	return final;
 tzcpunsafe:
 	final.ok = 0;

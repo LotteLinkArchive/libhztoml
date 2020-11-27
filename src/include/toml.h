@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdarg.h>
 
 #ifdef __cplusplus
 #define TOML_EXTERN extern "C"
@@ -235,9 +236,9 @@ TOML_EXTERN int toml_rtots(toml_raw_t s, toml_timestamp_t* ret);
  * Define MAX_ACCESSOR_SIZE when *compiling* the library to change this.
  */
 TOML_EXTERN toml_accessor_t toml_accessor_gen(
-	const char *accessor_obj,
 	toml_table_t *table,
-	toml_type_t type);
+	toml_type_t type,
+	const char *accessor_obj, ...);
 
 #undef TOML_EXTERN
 #endif /* TOML_H */
